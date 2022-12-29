@@ -16,10 +16,7 @@ const LeadTable = () => {
   const [fromselectedDate, setFromSelectedDate] = useState(null);
 
   const currentLead = () => {
-    // const headers = {
-    //   'Access-Control-Allow-Origin': 'http://localhost:3000',
-    //   'Content-Type': 'application/json'
-    // }
+    
     async function getLeads() {
       const request = await axios.get(baseURL);
       console.log(request.data.RESPONSE);
@@ -32,6 +29,7 @@ const LeadTable = () => {
     const toDate = moment(toselectedDate).format("DD-MMM-YYYY");
     const fromDate = moment(fromselectedDate).format("DD-MMM-YYYY");
     console.log(toDate, fromDate);
+    
     if (
       moment(fromDate).format("YYYYMMDD") - moment(toDate).format("YYYYMMDD") >
       7
@@ -40,7 +38,7 @@ const LeadTable = () => {
     } else {
       async function getLeads() {
         const request = await axios.get(
-          `${baseURL}&start_time=${toDate}&end_time=${fromDate}`
+          `${baseURL}&start_time=${toDate}&end_time=${fromDate}`,
         );
         console.log(request.data.RESPONSE);
         setLeadData(request.data.RESPONSE);
@@ -112,13 +110,12 @@ const LeadTable = () => {
             <th scope="col">State</th>
             <th scope="col">City</th>
             <th scope="col">Subject</th>
+            <th scope="col">Date & Time</th>
           </tr>
         </thead>
 
         <tbody>
-          {leadData === []
-            ? "No leads to display"
-            : leadData.map((data) => {
+          { leadData.map((data) => {
                 return (
                   <tr>
                     <th key={data.UNIQUE_QUERY_ID} scope="row">
@@ -131,6 +128,7 @@ const LeadTable = () => {
                     <td>{data.SENDER_STATE}</td>
                     <td>{data.SENDER_CITY}</td>
                     <td>{data.SUBJECT}</td>
+                    <td>{data.QUERY_TIME}</td>
                   </tr>
                 );
               })}
